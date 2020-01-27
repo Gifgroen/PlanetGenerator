@@ -16,23 +16,19 @@ public class Planet : MonoBehaviour
 
 #pragma warning disable 649
     [SerializeField] private GameObject terrainFacePrefab;
-    [SerializeField] private ShapeSettings shapeSettings;
-    [SerializeField] private ColourSettings colourSettings;
-
     [Range(2, 256)] [SerializeField] private int resolution = 10;
+    [SerializeField] private bool autoUpdate;
+    
+    [SerializeField] public ShapeSettings shapeSettings;
+    [SerializeField] public ColourSettings colourSettings;
 
-    [SerializeField] private MeshFilter[] meshFilters;
+    [SerializeField, HideInInspector] private MeshFilter[] meshFilters;
 #pragma warning restore 649
 
-    private void OnValidate()
-    {
-        if (terrainFacePrefab == null)
-        {
-            return;
-        }
-
-        GeneratePlanet();
-    }
+#if UNITY_EDITOR
+    [HideInInspector] public bool shapeFoldout;
+    [HideInInspector] public bool colorFoldout;
+#endif
 
     private void Initialize()
     {
@@ -66,12 +62,20 @@ public class Planet : MonoBehaviour
 
     public void OnShapeSettingsUpdated()
     {
+        if (!autoUpdate)
+        {
+            return;
+        }
         Initialize();
         GenerateMesh();
     }
 
     public void OnColourSettingsUpdated()
     {
+        if (!autoUpdate)
+        {
+            return;
+        }
         Initialize();
         GenerateColours();
     }
