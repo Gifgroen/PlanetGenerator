@@ -1,9 +1,10 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 [ExecuteInEditMode]
 public class Planet : MonoBehaviour
 {
+    private static readonly int BaseColorNameId = Shader.PropertyToID("_BaseColor");
+
     private const int FaceCount = 6;
 
     private readonly Vector3[] _directions =
@@ -87,7 +88,7 @@ public class Planet : MonoBehaviour
     {
         foreach (var m in meshFilters)
         {
-            m.GetComponent<MeshRenderer>().sharedMaterial.color = colourSettings.color;
+            m.GetComponent<MeshRenderer>().sharedMaterial.SetColor(BaseColorNameId, colourSettings.color);
         }
     }
 }
